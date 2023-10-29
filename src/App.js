@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import IsLoggedin from './components/IsLoggedin';
 
 function App() {
+
+  const isAuth = useSelector(state => state.authReducer.isAuth);
+  const userId = useSelector(state => state.authReducer.userId);
+  const dispatch = useDispatch();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Routes>
+        <Route path='/' element={<IsLoggedin type="notIsAuth"><Register /></IsLoggedin>} />
+        <Route path='/login' element={<IsLoggedin type="notIsAuth"><Login /> </IsLoggedin>} />
+        <Route path='/home' element={<IsLoggedin type="isAuth"><Home /></IsLoggedin> } />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+
+      {/* <Register/>
+      <Login/>
+      <Home/>
+      <NotFound/> */}
     </div>
   );
 }
